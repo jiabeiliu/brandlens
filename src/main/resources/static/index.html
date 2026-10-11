@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrandLens — Brand Audience Insights</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --accent: #4f46e5;
+    --accent-soft: #eef2ff;
+    --good: #16a34a;
+    --warn: #d97706;
+    --bad: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 20px 24px;
+  }
+  header .wrap { max-width: 960px; margin: 0 auto; }
+  header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .controls-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; }
+  .controls-row:last-child { margin-bottom: 0; }
+  .tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .tabs button {
+    border: 0; background: var(--card); padding: 8px 16px; font-size: 14px;
+    cursor: pointer; color: var(--muted);
+  }
+  .tabs button.active { background: var(--accent); color: #fff; font-weight: 600; }
+  label.field { font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
+  select, input[type="text"] {
+    font-size: 14px; padding: 9px 12px; border: 1px solid var(--line);
+    border-radius: 8px; background: #fff; color: var(--ink);
+  }
+  select:focus, input[type="text"]:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  .ask-row { display: flex; gap: 10px; }
+  .ask-row input { flex: 1; }
+  button.primary {
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+    padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  }
+  button.primary:disabled { opacity: 0.55; cursor: default; }
+  button.ghost {
+    background: transparent; border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 14px; font-size: 14px; cursor: pointer; color: var(--muted);
+  }
+  .check { font-size: 14px; color: var(--ink); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .profile { font-size: 13px; color: var(--muted); }
+  .profile strong { color: var(--ink); }
+  .profile .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .profile .tag {
+    background: var(--accent-soft); color: var(--accent); border-radius: 999px;
+    padding: 2px 10px; font-size: 12px;
+  }
+  #error-banner {
+    background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; font-size: 14px;
+  }
+  #error-banner code { background: #fee2e2; padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  .turn { margin-bottom: 16px; }
+  .q {
+    background: var(--accent-soft); border-radius: 10px; padding: 12px 16px;
+    font-size: 15px; font-weight: 600; margin-bottom: 8px;
+  }
+  .q .who { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-bottom: 2px; }
+  .a { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+  .a .who { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .a .body { font-size: 14.5px; white-space: pre-wrap; }
+  .sources { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 10px; }
+  .sources h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  .sources ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--muted); }
+  .eval { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+  .eval h4 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  .score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; }
+  .score-row .lbl { width: 110px; flex-shrink: 0; }
+  .segs { display: inline-flex; gap: 3px; }
+  .seg { width: 22px; height: 10px; border-radius: 3px; background: var(--line); }
+  .seg.on { background: var(--good); }
+  .seg.mid { background: var(--warn); }
+  .seg.off { background: var(--bad); }
+  .seg.na { background: var(--line); }
+  .score-num { font-weight: 700; min-width: 36px; }
+  .rationale { font-size: 13px; color: var(--muted); margin: 2px 0 10px 120px; }
+  .spinner {
+    display: inline-block; width: 14px; height: 14px; margin-right: 8px;
+    border: 2px solid var(--line); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: -2px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading { text-align: center; color: var(--muted); font-size: 14px; padding: 12px; }
+  .hint { font-size: 13px; color: var(--muted); }
+  .empty { text-align: center; color: var(--muted); font-size: 14px; padding: 28px 0; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>BrandLens &mdash; Brand Audience Insights</h1>
+    <p>Ask advertiser questions about a brand &mdash; answers are generated by an LLM grounded in retrieved brand documents, with citations.</p>
+  </div>
+</header>
+<main>
+  <div id="error-banner" hidden></div>
+
+  <div class="card">
+    <div class="controls-row">
+      <div class="tabs">
+        <button id="tab-insight" class="active">Single-brand insight</button>
+        <button id="tab-compare">Compare brands</button>
+      </div>
+    </div>
+    <div class="controls-row" id="insight-controls">
+      <label class="field">Brand
+        <select id="brand-select"><option>Loading&hellip;</option></select>
+      </label>
+      <label class="check"><input type="checkbox" id="eval-toggle"> Evaluate with LLM judge</label>
+    </div>
+    <div class="controls-row" id="compare-controls" hidden>
+      <label class="field">Brand A
+        <select id="brandA-select"></select>
+      </label>
+      <label class="field">Brand B
+        <select id="brandB-select"></select>
+      </label>
+    </div>
+    <div class="controls-row ask-row">
+      <input type="text" id="question" placeholder="e.g. Who is the target audience for Nike running shoes, and what message angles would resonate?">
+      <button class="primary" id="ask-btn">Generate insight</button>
+    </div>
+    <div class="controls-row">
+      <div class="profile" id="brand-profile"></div>
+    </div>
+  </div>
+
+  <div id="thread"><div class="empty">No insights yet &mdash; pick a brand and ask a question above.</div></div>
+  <div id="loading" hidden><span class="spinner"></span><span id="loading-text">Generating&hellip;</span></div>
+
+  <div class="card" id="followup-card" hidden>
+    <div class="controls-row ask-row">
+      <input type="text" id="followup" placeholder="Ask a follow-up, e.g. What about their pricing strategy for that audience?">
+      <button class="primary" id="followup-btn">Ask follow-up</button>
+      <button class="ghost" id="clear-btn">New thread</button>
+    </div>
+    <div class="hint">Follow-ups reuse the conversation above as context (stateless <code>history[]</code>).</div>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var API = ""; // same origin — Spring Boot serves this page, no CORS issues
+  var state = {
+    mode: "insight",
+    brands: [],          // ["nike", ...]
+    profiles: {},       // brand -> profile JSON
+    thread: [],         // [{role:"user"|"assistant", content, meta}]
+    currentBrand: null,
+    busy: false
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var errBanner = $("error-banner"), threadEl = $("thread"),
+      loadingEl = $("loading"), loadingText = $("loading-text");
+
+  function showError(msg) {
+    errBanner.innerHTML = msg;
+    errBanner.hidden = false;
+  }
+  function clearError() { errBanner.hidden = true; errBanner.innerHTML = ""; }
+
+  function setBusy(b, label) {
+    state.busy = b;
+    $("ask-btn").disabled = b;
+    $("followup-btn").disabled = b;
+    loadingEl.hidden = !b;
+    if (b) loadingText.textContent = label || "Generating…";
+  }
+
+  async function api(path, body) {
+    var res;
+    try {
+      res = await fetch(API + path, {
+        method: body === undefined ? "GET" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body === undefined ? undefined : JSON.stringify(body)
+      });
+    } catch (e) {
+      throw new Error("network");
+    }
+    var data = null;
+    try { data = await res.json(); } catch (e) { /* non-JSON */ }
+    if (!res.ok) {
+      var msg = (data && (data.message || data.error)) || ("HTTP " + res.status);
+      throw new Error("api:" + msg);
+    }
+    return data;
+  }
+
+  function friendlyError(e) {
+    if (e.message === "network") {
+      return "Couldn&rsquo;t reach the backend at <code>localhost:8081</code>. " +
+        "Is Spring Boot running? In a terminal:<br><code>cd ~/workspace/brandlens &amp;&amp; mvn spring-boot:run</code> " +
+        "(and <code>python3 scripts/seed.py</code> once to load data).";
+    }
+    return "Request failed: " + escapeHtml(e.message.replace(/^api:/, "")) +
+      ". If this is a fresh backend, run <code>python3 scripts/seed.py</code> to ingest brand data.";
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  // Minimal safe formatting: escape first, then **bold** and line breaks.
+  function fmt(text) {
+    var h = escapeHtml(text);
+    h = h.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    return h;
+  }
+
+  function displayName(brand) {
+    var p = state.profiles[brand];
+    return (p && p.displayName) || brand.charAt(0).toUpperCase() + brand.slice(1);
+  }
+
+  function fillSelect(sel, brands, selected) {
+    sel.innerHTML = "";
+    brands.forEach(function (b) {
+      var o = document.createElement("option");
+      o.value = b; o.textContent = displayName(b);
+      if (b === selected) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+
+  async function loadBrands() {
+    var brands = await api("/api/brands");
+    if (!Array.isArray(brands) || !brands.length) throw new Error("api:empty brand list");
+    state.brands = brands;
+    fillSelect($("brand-select"), brands, brands[0]);
+    fillSelect($("brandA-select"), brands, brands[0]);
+    fillSelect($("brandB-select"), brands, brands.length > 1 ? brands[1] : brands[0]);
+    // Preload profiles for display names + profile card.
+    await Promise.all(brands.map(async function (b) {
+      try { state.profiles[b] = await api("/api/brands/" + encodeURIComponent(b)); }
+      catch (e) { /* profile optional */ }
+    }));
+    fillSelect($("brand-select"), brands, brands[0]);
+    fillSelect($("brandA-select"), brands, brands[0]);
+    fillSelect($("brandB-select"), brands, brands.length > 1 ? brands[1] : brands[0]);
+    state.currentBrand = brands[0];
+    renderProfile();
+  }
+
+  function renderProfile() {
+    var el = $("brand-profile");
+    var p = state.profiles[state.currentBrand];
+    if (!p) { el.innerHTML = ""; return; }
+    var tags = [];
+    (p.products || []).slice(0, 4).forEach(function (x) { tags.push("<span class='tag'>" + escapeHtml(x) + "</span>"); });
+    el.innerHTML =
+      "<strong>" + escapeHtml(p.displayName || state.currentBrand) + "</strong>" +
+      (p.tagline ? " &mdash; " + escapeHtml(p.tagline) : "") +
+      (p.industry ? " <span class='hint'>(" + escapeHtml(p.industry) + ")</span>" : "") +
+      (tags.length ? "<div class='tags'>" + tags.join("") + "</div>" : "");
+  }
+
+  function sourcesHtml(sources) {
+    if (!sources || !sources.length) return "";
+    var items = sources.map(function (s) {
+      var doc = s.docId != null ? s.docId : ("chunk " + s.chunkId);
+      var sim = (typeof s.score === "number") ? " (dist " + s.score.toFixed(3) + ")" : "";
+      return "<li>" + escapeHtml(doc) + escapeHtml(sim) + "</li>";
+    }).join("");
+    return "<div class='sources'><h4>Sources</h4><ul>" + items + "</ul></div>";
+  }
+
+  function scoreSegs(score) {
+    // score 1-5; -1 (or other) => n/a gray
+    var out = "";
+    for (var i = 1; i <= 5; i++) {
+      var cls = "na";
+      if (score >= 1 && score <= 5) {
+        cls = i <= score ? (score >= 4 ? "on" : score >= 3 ? "mid" : "off") : "";
+      }
+      out += "<span class='seg " + cls + "'></span>";
+    }
+    return out;
+  }
+
+  function evalHtml(ev) {
+    if (!ev) return "";
+    function row(label, score, rationale) {
+      var num = (score >= 1 && score <= 5) ? score + " / 5" : "n/a";
+      return "<div class='score-row'><span class='lbl'>" + label + "</span>" +
+        "<span class='segs'>" + scoreSegs(score) + "</span>" +
+        "<span class='score-num'>" + num + "</span></div>" +
+        (rationale ? "<div class='rationale'>" + escapeHtml(rationale) + "</div>" : "");
+    }
+    return "<div class='eval'><h4>LLM judge scores</h4>" +
+      row("Groundedness", ev.groundedness, ev.groundednessRationale) +
+      row("Relevance", ev.relevance, ev.relevanceRationale) + "</div>";
+  }
+
+  function renderThread() {
+    if (!state.thread.length) {
+      threadEl.innerHTML = "<div class='empty'>No insights yet &mdash; pick a brand and ask a question above.</div>";
+      $("followup-card").hidden = true;
+      return;
+    }
+    var html = "";
+    state.thread.forEach(function (t) {
+      if (t.role === "user") {
+        html += "<div class='turn'><div class='q'><span class='who'>You asked" +
+          (t.brandLabel ? " · " + escapeHtml(t.brandLabel) : "") + "</span>" +
+          escapeHtml(t.content) + "</div></div>";
+      } else {
+        html += "<div class='turn'><div class='a'><div class='who'>BrandLens" +
+          (t.brandLabel ? " · " + escapeHtml(t.brandLabel) : "") + "</div>" +
+          "<div class='body'>" + fmt(t.content) + "</div>" +
+          sourcesHtml(t.sources) + evalHtml(t.eval) + "</div></div>";
+      }
+    });
+    threadEl.innerHTML = html;
+    // Follow-up card only makes sense in single-brand insight mode.
+    $("followup-card").hidden = !(state.mode === "insight" && state.thread.length);
+    threadEl.lastElementChild.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function historyForApi() {
+    return state.thread
+      .filter(function (t) { return t.role === "user" || t.role === "assistant"; })
+      .map(function (t) { return { role: t.role, content: t.content }; });
+  }
+
+  async function ask() {
+    if (state.busy) return;
+    var q = $("question").value.trim();
+    if (!q) { $("question").focus(); return; }
+    clearError();
+
+    if (state.mode === "compare") {
+      var a = $("brandA-select").value, b = $("brandB-select").value;
+      if (a === b) { showError("Pick two <em>different</em> brands to compare."); return; }
+      setBusy(true, "Comparing " + displayName(a) + " vs " + displayName(b) + "…");
+      try {
+        var res = await api("/api/compare", { brandA: a, brandB: b, question: q });
+        state.thread.push({ role: "user", content: q, brandLabel: displayName(a) + " vs " + displayName(b) });
+        state.thread.push({
+          role: "assistant", content: res.comparison || "(empty response)",
+          brandLabel: displayName(res.brandA || a) + " vs " + displayName(res.brandB || b),
+          sources: (res.sourcesA || []).concat((res.sourcesB || []).map(function (s) {
+            return { chunkId: s.chunkId, docId: s.docId, score: s.score };
+          })),
+          eval: null
+        });
+        // Tag compare sources per brand for the list.
+        var last = state.thread[state.thread.length - 1];
+        last.sourcesA = res.sourcesA || []; last.sourcesB = res.sourcesB || [];
+        last.compareView = true;
+        renderThreadCompare();
+      } catch (e) { showError(friendlyError(e)); }
+      setBusy(false);
+      return;
+    }
+
+    // insight mode
+    var brand = $("brand-select").value;
+    var useEval = $("eval-toggle").checked;
+    setBusy(true, useEval ? "Generating insight + judging…" : "Generating insight…");
+    try {
+      var body = { brand: brand, question: q, history: historyForApi() };
+      var out = useEval ? await api("/api/insights/eval", body) : await api("/api/insights", body);
+      state.thread.push({ role: "user", content: q, brandLabel: displayName(brand) });
+      state.thread.push({
+        role: "assistant",
+        content: out.insight || "(empty response)",
+        brandLabel: displayName(out.brand || brand),
+        sources: out.sources || [],
+        eval: useEval ? {
+          groundedness: out.groundedness, groundednessRationale: out.groundednessRationale,
+          relevance: out.relevance, relevanceRationale: out.relevanceRationale
+        } : null
+      });
+      $("question").value = "";
+      renderThread();
+    } catch (e) { showError(friendlyError(e)); }
+    setBusy(false);
+  }
+
+  // Compare answers get per-brand source lists instead of one merged list.
+  function renderThreadCompare() {
+    var html = "";
+    state.thread.forEach(function (t) {
+      if (t.role === "user") {
+        html += "<div class='turn'><div class='q'><span class='who'>You asked" +
+          (t.brandLabel ? " · " + escapeHtml(t.brandLabel) : "") + "</span>" +
+          escapeHtml(t.content) + "</div></div>";
+      } else if (t.compareView) {
+        html += "<div class='turn'><div class='a'><div class='who'>BrandLens · " +
+          escapeHtml(t.brandLabel) + "</div>" +
+          "<div class='body'>" + fmt(t.content) + "</div>" +
+          "<div class='sources'><h4>Sources — " + escapeHtml(displayName($("brandA-select").value)) +
+          "</h4><ul>" + (t.sourcesA || []).map(function (s) {
+            return "<li>" + escapeHtml(s.docId || ("chunk " + s.chunkId)) + "</li>";
+          }).join("") + "</ul></div>" +
+          "<div class='sources'><h4>Sources — " + escapeHtml(displayName($("brandB-select").value)) +
+          "</h4><ul>" + (t.sourcesB || []).map(function (s) {
+            return "<li>" + escapeHtml(s.docId || ("chunk " + s.chunkId)) + "</li>";
+          }).join("") + "</ul></div>" +
+          "</div></div>";
+      } else {
+        html += "<div class='turn'><div class='a'><div class='who'>BrandLens" +
+          (t.brandLabel ? " · " + escapeHtml(t.brandLabel) : "") + "</div>" +
+          "<div class='body'>" + fmt(t.content) + "</div>" +
+          sourcesHtml(t.sources) + evalHtml(t.eval) + "</div></div>";
+      }
+    });
+    threadEl.innerHTML = html;
+    $("followup-card").hidden = true;
+  }
+
+  async function followup() {
+    if (state.busy || state.mode !== "insight") return;
+    var q = $("followup").value.trim();
+    if (!q) { $("followup").focus(); return; }
+    clearError();
+    var brand = $("brand-select").value;
+    var useEval = $("eval-toggle").checked;
+    setBusy(true, useEval ? "Generating follow-up + judging…" : "Generating follow-up…");
+    try {
+      var body = { brand: brand, question: q, history: historyForApi() };
+      var out = useEval ? await api("/api/insights/eval", body) : await api("/api/insights", body);
+      state.thread.push({ role: "user", content: q, brandLabel: displayName(brand) });
+      state.thread.push({
+        role: "assistant",
+        content: out.insight || "(empty response)",
+        brandLabel: displayName(out.brand || brand),
+        sources: out.sources || [],
+        eval: useEval ? {
+          groundedness: out.groundedness, groundednessRationale: out.groundednessRationale,
+          relevance: out.relevance, relevanceRationale: out.relevanceRationale
+        } : null
+      });
+      $("followup").value = "";
+      renderThread();
+    } catch (e) { showError(friendlyError(e)); }
+    setBusy(false);
+  }
+
+  function setMode(mode) {
+    state.mode = mode;
+    $("tab-insight").classList.toggle("active", mode === "insight");
+    $("tab-compare").classList.toggle("active", mode === "compare");
+    $("insight-controls").hidden = mode !== "insight";
+    $("compare-controls").hidden = mode !== "compare";
+    $("brand-profile").style.display = mode === "insight" ? "" : "none";
+    $("ask-btn").textContent = mode === "compare" ? "Compare brands" : "Generate insight";
+    state.thread = [];
+    renderThread();
+  }
+
+  // Events
+  $("ask-btn").addEventListener("click", ask);
+  $("question").addEventListener("keydown", function (e) { if (e.key === "Enter") ask(); });
+  $("followup-btn").addEventListener("click", followup);
+  $("followup").addEventListener("keydown", function (e) { if (e.key === "Enter") followup(); });
+  $("clear-btn").addEventListener("click", function () { state.thread = []; renderThread(); });
+  $("tab-insight").addEventListener("click", function () { setMode("insight"); });
+  $("tab-compare").addEventListener("click", function () { setMode("compare"); });
+  $("brand-select").addEventListener("change", function () {
+    state.currentBrand = $("brand-select").value;
+    state.thread = []; // avoid cross-brand history confusion
+    renderProfile(); renderThread();
+  });
+
+  // Boot
+  (async function () {
+    try {
+      await loadBrands();
+    } catch (e) {
+      showError(friendlyError(e));
+      ["brand-select", "brandA-select", "brandB-select"].forEach(function (id) {
+        $(id).innerHTML = "<option>—</option>";
+      });
+    }
+  })();
+})();
+</script>
+</body>
+</html>

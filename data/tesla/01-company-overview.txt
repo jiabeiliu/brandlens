@@ -1,0 +1,11 @@
+Source: Tesla official about page + company profile (tesla.com, summarized Oct 2026).
+
+Tesla, Inc. is an American multinational automotive and clean energy company headquartered at Gigafactory Texas in Austin, Texas. Its mission is accelerating the world's transition to sustainable energy — "building a world powered by solar energy, running on batteries and transported by electric vehicles."
+
+The company was incorporated on July 1, 2003, as Tesla Motors by Martin Eberhard and Marc Tarpenning, named as a tribute to inventor Nikola Tesla. Elon Musk led the Series A funding round in February 2004, became chairman, and was named CEO in 2008.
+
+Scale: over 100,000 employees worldwide (about 134,800 in 2025 per filings); six huge vertically-integrated factories across three continents (Fremont, Gigafactory Texas, Gigafactory Shanghai, Gigafactory Berlin, plus Nevada and New York operations). 2025 revenue was about $94.8 billion with production output of 1.66 million vehicles and 46.7 GWh of battery energy storage systems.
+
+Tesla designs, builds, sells and services its products in-house with a first-principles engineering culture. Its vehicles are positioned among the safest in the world, and over-the-air software updates regularly add features. In 2023 Tesla reported its products helped avoid about 20.4 million metric tons of CO2e.
+
+Tesla is one of the world's most valuable companies by market capitalization and has been the world's most valuable automaker since July 2020. It trades on NASDAQ under TSLA.

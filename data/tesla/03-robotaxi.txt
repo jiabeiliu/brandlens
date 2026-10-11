@@ -1,0 +1,10 @@
+Source: 2025-2026 press coverage (Reuters, CNN, company announcements, summarized Oct 2026).
+
+Tesla's robotaxi program is its biggest new product bet:
+
+- Austin pilot: launched June 2025 with 10-20 Model Y vehicles in a geofenced zone, daylight hours only, with safety monitors. By December 2025 the fleet reached ~35 vehicles and front-seat monitors were removed. By January 2026 Tesla reported over 550,000 total robotaxi miles across Austin and the Bay Area with a combined fleet of ~500 vehicles.
+- 2026 expansion: Dallas and Houston went live April 2026 (Houston covers ~24 sq miles in northwest Harris County; Dallas centered on Highland Park, later expanded ~50% to ~120 sq km). Miami launched July 2026 with unsupervised rides, followed by Orlando and Tampa. By September 2026 service was live across six cities: Austin, Dallas, Houston, Miami, Orlando, Tampa.
+- Nevada: Tesla won approval from the Nevada Transportation Authority for commercial robotaxi operations statewide including Las Vegas, with a cap of 5,000 vehicles and a plan to scale toward 2,500 within a year.
+- Austin operations: hours extended from 6am-10pm to 6am-11pm; 111 Cybercabs added to the Austin fleet; Tesla targeting 24/7 operation. Elon Musk said the remaining challenge is nighttime edge cases like detecting animals on dark roads.
+- App experience: riders use a dedicated Tesla Robotaxi app (separate from the owner app) with saved profiles for music, climate and seating. Early pricing is comparable to Uber/Lyft ($4-9 for short trips).
+- Competition: Waymo (Alphabet) operates in ~10 cities after nearly a decade; Zoox (Amazon) is developing a purpose-built robotaxi. Tesla's argument is data volume from its consumer fleet plus lower vehicle cost. Morgan Stanley projected Tesla's robotaxi fleet reaching 1,500 vehicles by end of 2026 and 30,000 by 2030.

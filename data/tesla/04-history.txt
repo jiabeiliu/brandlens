@@ -1,0 +1,15 @@
+Source: Tesla company history (public knowledge, summarized Oct 2026).
+
+Key milestones:
+
+- 2003: founded as Tesla Motors in San Carlos, California. Strategy: start with a premium sports car for early adopters, then move downmarket.
+- 2008: Roadster sports car production begins; Elon Musk becomes CEO.
+- 2010: $465 million DOE loan (repaid in full); IPO on NASDAQ at $17/share — the first American car company IPO since Ford in 1956.
+- 2012: Model S luxury sedan launches; Fremont factory (former NUMMI plant bought from Toyota for $42M) ramps up.
+- 2014: Autopilot driver-assistance announced. 2015: Powerwall/Powerpack energy storage unveiled ($800M in orders within a week).
+- 2016: Model 3 announced ($35k target); 325,000+ paid reservations in a week. SolarCity acquired.
+- 2017: company renamed Tesla, Inc. 2018: "production hell" for Model 3, then resolved — Model 3 became the world's best-selling EV 2018-2021.
+- 2019-2022: Gigafactory Shanghai (2019), Berlin (2020) and Texas (2020) built; Model Y launches 2020; market cap passes $1 trillion October 2021; Cybertruck ships November 2023.
+- 2021: legal headquarters moved to Gigafactory Texas, Austin.
+- 2024: 10% workforce reduction; incorporation moved from Delaware to Texas.
+- 2025: Robotaxi pilot launches in Austin (June). By end of 2025 Tesla lost its status as the world's leading EV manufacturer by volume (to BYD), while remaining the most valuable automaker.

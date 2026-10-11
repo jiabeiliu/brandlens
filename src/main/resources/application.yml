@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/brandlensdb
+    username: rag
+    password: rag
+  # schema.sql runs BEFORE JPA startup: creates the pgvector extension + table.
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+llm:
+  # Provider profile: 'ollama' (default, free, local) or 'openai' (paid).
+  # Both speak the OpenAI-compatible HTTP API (/v1/embeddings, /v1/chat/completions).
+  provider: ${LLM_PROVIDER:ollama}
+  base-url: ${LLM_BASE_URL:http://localhost:11434/v1}
+  # Only needed for the OpenAI profile (LLM_PROVIDER=openai). Ollama needs no key.
+  api-key: ${OPENAI_API_KEY:}
+  embedding-model: ${LLM_EMBEDDING_MODEL:nomic-embed-text}
+  # nomic-embed-text -> 768 dims. MUST match vector(N) in schema.sql and BrandChunk.
+  embedding-dimensions: 768
+  chat-model: ${LLM_CHAT_MODEL:llama3.1:8b}

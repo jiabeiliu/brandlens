@@ -1,0 +1,22 @@
+Source: Tesla product lineup (public knowledge, summarized Oct 2026).
+
+Vehicles:
+- Model 3: mass-market sedan, launched 2017; became the world's best-selling electric car from 2018 to 2021.
+- Model Y: mid-size crossover SUV, launched 2020; Tesla's highest-volume vehicle.
+- Model S: luxury sedan, launched 2012; won 2013 Motor Trend Car of the Year.
+- Model X: luxury SUV with falcon-wing doors, launched 2015.
+- Cybertruck: stainless-steel pickup truck, launched 2023, built at Gigafactory Texas.
+- Tesla Semi: electric semi truck, launched 2022.
+- Cybercab: purpose-built robotaxi with no steering wheel, volume production scheduled at Gigafactory Texas.
+
+Energy:
+- Powerwall: home battery storage; Megapack: grid-scale battery storage (built at the Megafactory in Lathrop, California).
+- Solar panels and Solar Roof for residential energy generation.
+- Tesla Energy was formed from the 2016 acquisition of SolarCity ($2.6 billion).
+
+Software and services:
+- Full Self-Driving (FSD): advanced driver-assistance software, continuously updated over the air; version 14.3 described as a step toward unsupervised consumer deployment.
+- Supercharger network: 7,791 stations globally — one of the largest fast-charging networks; opened to other automakers via the North American Charging Standard (NACS).
+- Services: 1,359 sales, service and delivery centers; vehicle insurance; maintenance; automotive regulatory credits.
+
+Marketing note: Tesla historically spends almost nothing on traditional paid advertising, relying instead on product launches, Elon Musk's direct reach, the owner community and referral programs.
