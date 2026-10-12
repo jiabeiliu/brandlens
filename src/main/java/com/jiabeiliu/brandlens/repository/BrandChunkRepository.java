@@ -31,6 +31,8 @@ public interface BrandChunkRepository extends JpaRepository<BrandChunk, Long> {
                                       @Param("embedding") String embeddingLiteral,
                                       @Param("limit") int limit);
 
+    long deleteByBrandAndDocId(String brand, String docId);
+
     long countByBrand(String brand);
 
     @Modifying

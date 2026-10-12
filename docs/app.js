@@ -1,0 +1,14 @@
+"use strict";
+const $=id=>document.getElementById(id); let examples; let scenario="audience";
+function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;}
+function block(title,text,cls){const n=node("section","","block "+cls);n.append(node("span",title,"tag"),node("p",text));return n;}
+function card(brand,comparison){const x=examples[brand];const n=node("article","",comparison?"comparison":"");n.append(node("h2",x.name,"brand-heading"),node("p",comparison?"Separate evidence context — no inferred audience-overlap measurement":"Authored example · not a generated result","context"));
+ n.append(block("SOURCE CONTEXT",x.fact,"fact"));
+ if(scenario==="missing"||scenario==="pricing")n.append(block("INSUFFICIENT EVIDENCE",scenario==="missing"?"Campaign ROAS requires attributed revenue and ad spend for the specified period. Neither is in these company materials.":"These materials do not establish current prices or price sensitivity. Retrieve dated product pricing and validate the proposed audience hypothesis before making a claim.","gap"));
+ else {n.append(block("AUDIENCE HYPOTHESIS",x.hypothesis,"hypothesis"),block(scenario==="followup"?"FOLLOW-UP · MESSAGE TEST":"SUGGESTED ADVERTISING TEST",x.test,"test"),block("MEASURE",x.metric,"metric"));}
+ n.append(block("EVIDENCE GAP",x.gap,"gap"));const evidence=node("details","");evidence.append(node("summary","Inspect the source and its limitations"),node("p","Paraphrased company positioning. This link is a starting source, not proof of measured audience behavior. No freshness guarantee is claimed."));const a=node("a","Open official company information ↗");a.href=x.source;a.target="_blank";a.rel="noopener noreferrer";evidence.append(a);n.append(evidence);return n;}
+function render(){const brand=$("brand").value;$("industry").textContent=examples[brand].industry;$("results").replaceChildren(card(brand,false));$("other").disabled=!$("compare").checked;
+ if($("compare").checked){if($("other").value===brand)$("results").append(node("p","Choose a different comparison brand."));else $("results").append(card($("other").value,true));}
+ document.querySelectorAll('[data-scenario]').forEach(b=>{b.classList.toggle('selected',b.dataset.scenario===scenario);b.setAttribute('aria-pressed',b.dataset.scenario===scenario);});}
+fetch('examples.json').then(r=>{if(!r.ok)throw Error('examples');return r.json();}).then(data=>{examples=data;render();}).catch(()=>{$('results').textContent='Examples could not load. Please reload.';});
+$('brand').addEventListener('change',()=>{scenario='audience';render();});$('other').addEventListener('change',render);$('compare').addEventListener('change',render);document.querySelectorAll('[data-scenario]').forEach(b=>b.addEventListener('click',()=>{scenario=b.dataset.scenario;render();}));

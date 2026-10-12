@@ -1,14 +1,15 @@
 # BrandLens — mini brand-insights engine
 
-A weekend build: a tiny "Insights Finder" for brands. Given a brand and an
+**[Interactive demo](https://jiabeiliu.github.io/brandlens/)** — authored example walkthrough, not a live LLM endpoint.
+
+A portfolio prototype: a tiny "Insights Finder" for brands. Given a brand and an
 advertiser-style question, it retrieves that brand's knowledge from pgvector,
 combines it with a lightweight brand-entity profile (products, competitors,
 audience segments), and generates a grounded audience insight with cited
 sources — using a local LLM, free.
 
 Built for a Monday chat with Google's Ads Planning team (Insights Finder /
-PARC): same retrieve → generate → cite architecture, applied to brands
-instead of medical knowledge.
+PARC): a retrieve → generate → cite exploration applied to brands. Google internal architecture is not known or reproduced.
 <img width="1267" height="868" alt="ad30d8e34f28364910ab749a2c060a24" src="https://github.com/user-attachments/assets/f21a7352-b96a-4bb3-9f14-9fe28201a9bd" />
 <img width="1270" height="697" alt="3e97a2e21bed29bdef59112079d6ddf4" src="https://github.com/user-attachments/assets/d8064ea1-c63c-4e97-9889-c10c50446573" />
 
@@ -141,24 +142,25 @@ sources (official about pages, company profiles, press coverage). Each file
 notes its source. `src/main/resources/entities/*.json` — hand-curated entity
 profiles per brand.
 
-## 30-second pitch (for the Monday chat)
+## Prototype scope
 
-> "Over the weekend I built a mini version of what your team does with
-> Insights Finder. It's a brand-insights engine: brand knowledge goes into
-> pgvector, each brand gets a small entity profile — products, competitors,
-> audience segments, basically a tiny knowledge graph — and when an
-> advertiser asks a question, it retrieves the brand's chunks and generates
-> a grounded insight with citations, all on a local LLM. Then I added the
-> three things I'd actually do on the job: a side-by-side brand comparison
-> endpoint (retrieves both brands separately, one LLM call, per-brand
-> citations), an LLM-as-judge eval that scores groundedness and relevance
-> 1-5 so I can iterate on prompt quality, and stateless multi-turn
-> follow-ups. Plus I hardened the data pipeline — incremental ingestion
-> with content hashing, doc validation, and a documented path to add a new
-> brand. The interesting part was scoping retrieval per brand so knowledge
-> never leaks across entities, which is the same problem your KG entity
-> clusters solve at Google scale. Happy to walk you through the code —
-> it's Spring Boot, under 1,000 lines."
+This prototype uses curated brand JSON profiles, not an automatically learned knowledge graph.
+Source summaries and profiles require fact-checking and dated source provenance before substantive advertiser use.
+The public demo is authored examples. The local service performs actual retrieval and generation.
+No measured audience composition, ROAS impact or equivalence with Google products is claimed.
+
+## Reliability and evaluation improvements
+
+- Follow-up retrieval includes the last two user questions and current brand; assistant answers are not treated as evidence. This is contextual expansion, not trained query rewriting.
+- Sources include excerpts and a `cited` flag; unknown references are rejected. Semantic support still needs human evaluation.
+- Answers distinguish source facts, inferred audience hypotheses, suggested tests and evidence gaps.
+- Empty model answers and unavailable upstream services return explicit errors; generation has bounded timeouts.
+- Ingestion atomically replaces each document, with embeddings computed before the transaction. Seed updates no longer clear a brand unless `--clear` is explicit.
+- `eval/cases.json` contains 20 cases; `scripts/evaluate.py` records real responses and latency for human review. No evaluation score is fabricated.
+- Same-model judge scores are experimental; they see the profile as well as retrieved evidence and validate score bounds.
+
+Run `mvn verify` and `python3 -m unittest discover -s tests -v`.
+See [evaluation protocol](eval/REVIEW.md).
 
 ## Status / next steps
 
@@ -169,4 +171,4 @@ profiles per brand.
 - [x] Pipeline hardening (incremental seed, validation, PIPELINE.md, entity drafter)
 - [ ] Run + seed on Mac, verify one insight per brand end-to-end
 - [ ] Optional: add a 4th brand (see PIPELINE.md — ~10 min), tune topK, try a bigger local model
-- [ ] Not pushed to GitHub yet — push when ready to show it
+- [x] Public source repository and authored interactive walkthrough

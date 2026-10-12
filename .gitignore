@@ -3,3 +3,6 @@ target/
 *.iml
 .DS_Store
 .seed-state.json
+
+eval/*.local.json
+__pycache__/

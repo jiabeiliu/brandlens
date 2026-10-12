@@ -1,0 +1,32 @@
+{
+  "nike": {
+    "name": "Nike",
+    "industry": "Athletic footwear & apparel",
+    "source": "https://about.nike.com/en/company",
+    "fact": "Nike describes its mission around inspiration and innovation for athletes.",
+    "hypothesis": "Running-focused messaging may resonate with people who identify with athletic progress. This is a hypothesis, not an observed audience segment.",
+    "test": "Compare a personal-progress message with a product-feature message in a randomized creative experiment.",
+    "metric": "Predefine conversion rate as the primary metric, with cost per conversion as a guardrail. Use a power calculation before launch.",
+    "gap": "These company materials do not measure campaign reach, audience size, conversion lift or ROAS."
+  },
+  "starbucks": {
+    "name": "Starbucks",
+    "industry": "Coffee & retail",
+    "source": "https://about.starbucks.com/",
+    "fact": "Starbucks presents its business around coffee and the coffeehouse experience.",
+    "hypothesis": "A coffeehouse-experience message may resonate differently from a convenience message. The current evidence does not establish which audience prefers either.",
+    "test": "Compare an experience-led message with a convenience-led message under the same eligibility and allocation rules.",
+    "metric": "Choose one conversion event before running the test; monitor cost and uncertainty rather than selecting a winner from clicks alone.",
+    "gap": "Company descriptions do not establish current customer demographics, campaign results or incremental sales."
+  },
+  "tesla": {
+    "name": "Tesla",
+    "industry": "Electric vehicles & energy",
+    "source": "https://www.tesla.com/about",
+    "fact": "Tesla presents products spanning electric vehicles and energy systems.",
+    "hypothesis": "Vehicle and home-energy buyers may need different messages. This segmentation is an inferred starting point, not measured customer data.",
+    "test": "Within one product campaign, compare a product-utility message with an ownership-experience message. Avoid comparing unrelated product audiences as if randomized.",
+    "metric": "Predefine qualified lead conversion rate and acquisition cost; review whether leads remain qualified downstream.",
+    "gap": "This evidence does not provide geographic eligibility, current product availability, audience overlap or campaign performance."
+  }
+}

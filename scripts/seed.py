@@ -117,14 +117,9 @@ def main() -> int:
             print(f"[{brand}] skipped ({len(valid_docs)} docs unchanged)")
             continue
 
-        # --- (re-)ingest: clear brand once so chunks never duplicate or go stale ---
-        try:
-            r = delete(f"/api/ingest/{brand}")
-            print(f"[{brand}] cleared {r['removedChunks']} old chunks")
-        except urllib.error.HTTPError as e:
-            # Brand may have no chunks yet, or the service may not know the
-            # brand (missing entities JSON) — the per-doc POSTs will surface it.
-            print(f"[{brand}] clear returned HTTP {e.code} (continuing)")
+        # Per-document replacement is atomic. Explicit --clear alone removes brand data.
+        if clear:
+            delete(f"/api/ingest/{brand}")
 
         for doc_id, fname, text, digest, _ in valid_docs:
             try:
@@ -155,7 +150,7 @@ def main() -> int:
     print(f"total chunks this run: {total_chunks}")
     if failures:
         print(f"WARNING: {failures} doc(s) failed — see above")
-    return 0
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":
