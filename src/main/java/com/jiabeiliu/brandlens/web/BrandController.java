@@ -62,6 +62,11 @@ public class BrandController {
         return Map.of("brand", brand, "docId", request.docId(), "chunks", chunks);
     }
 
+    @DeleteMapping("/ingest/{brand}/documents/{docId}")
+    public Map<String,Object> deleteDocument(@PathVariable String brand, @PathVariable String docId) {
+        return Map.of("removedChunks", ingestService.deleteDocument(brand.toLowerCase(),docId));
+    }
+
     /** Clear all chunks for a brand (re-ingest cleanly). */
     @DeleteMapping("/ingest/{brand}")
     public Map<String, Object> clearBrand(@PathVariable String brand) {

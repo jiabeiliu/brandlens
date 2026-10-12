@@ -152,7 +152,7 @@ No measured audience composition, ROAS impact or equivalence with Google product
 - Sources include excerpts and a `cited` flag; unknown references are rejected. Semantic support still needs human evaluation.
 - Answers distinguish source facts, inferred audience hypotheses, suggested tests and evidence gaps.
 - Empty model answers and unavailable upstream services return explicit errors; generation has bounded timeouts.
-- Ingestion atomically replaces each document, with embeddings computed before the transaction. Seed updates no longer clear a brand unless `--clear` is explicit.
+- Ingestion atomically replaces each document, with embeddings computed before the transaction. Seed updates no longer clear a brand unless `--clear` is explicit. Removed documents known to the seed-state file are deleted only after the replacement corpus succeeds. For an existing database without seed-state history, restart the updated service and use `python3 scripts/seed.py --clear` once to replace the old demo corpus.
 - `eval/cases.json` contains 20 cases; `scripts/evaluate.py` records real responses and latency for human review. No evaluation score is fabricated.
 - Same-model judge scores are experimental; they see the profile as well as retrieved evidence and validate score bounds.
 

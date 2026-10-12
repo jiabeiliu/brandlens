@@ -52,6 +52,10 @@ public class IngestService {
         jdbc.queryForObject("SELECT pg_advisory_xact_lock(hashtextextended(?, 0))", Object.class, "brand:" + brand);
     }
 
+    public long deleteDocument(String brand, String docId) {
+        return transaction.execute(status -> { lock(brand); return repository.deleteByBrandAndDocId(brand,docId); });
+    }
+
     /** Removes all chunks for a brand (re-ingest cleanly). */
     @Transactional
     public long clearBrand(String brand) {

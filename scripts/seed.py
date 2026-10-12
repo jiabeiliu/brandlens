@@ -4,8 +4,7 @@ Seed BrandLens: ingest data/<brand>/*.txt into the running service.
 
 Incremental by default: each doc's SHA-256 is stored in .seed-state.json
 (project root). On re-run, brands whose docs are all unchanged are skipped;
-a brand with any new/changed doc is cleared and fully re-ingested so chunks
-never go stale or duplicate.
+changed documents are replaced atomically; known removed documents are reconciled only after successful ingestion.
 
 Validation per doc:
   - empty docs are REJECTED (counted as failed, never sent)
@@ -105,7 +104,9 @@ def main() -> int:
             print(f"[{brand}] no valid docs, skipping")
             continue
 
-        needs_ingest = clear or force or any(changed for _, _, _, _, changed in valid_docs)
+        current_ids = {doc_id for doc_id, _, _, _, _ in valid_docs}
+        stale_ids = [key for key in state if key.startswith(brand + "-") and key not in current_ids]
+        needs_ingest = clear or force or bool(stale_ids) or any(changed for _, _, _, _, changed in valid_docs)
 
         if dry_run:
             action = "would re-ingest" if needs_ingest else "would skip (unchanged)"
@@ -121,6 +122,7 @@ def main() -> int:
         if clear:
             delete(f"/api/ingest/{brand}")
 
+        brand_failures_before = failures
         for doc_id, fname, text, digest, _ in valid_docs:
             try:
                 r = post("/api/ingest", {"brand": brand, "docId": doc_id, "text": text})
@@ -137,6 +139,16 @@ def main() -> int:
                 stats["failed"] += 1
                 failures += 1
                 print(f"[{brand}] {fname}: FAILED ({e})")
+
+        # Remove old known documents only once the replacement corpus is fully ingested.
+        if failures == brand_failures_before:
+            for doc_id in stale_ids:
+                try:
+                    delete(f"/api/ingest/{brand}/documents/{doc_id}")
+                    new_state.pop(doc_id, None)
+                except OSError as e:
+                    failures += 1
+                    print(f"[{brand}] stale document cleanup failed: {e}")
 
     if not dry_run:
         save_state(new_state)
