@@ -1,6 +1,12 @@
 # BrandLens — mini brand-insights engine
 
-**[Interactive demo](https://jiabeiliu.github.io/brandlens/)** — authored example walkthrough, not a live LLM endpoint.
+## Demo
+
+- **[Local live demo — http://localhost:8081/](http://localhost:8081/)**: actual brand-scoped retrieval, local LLM generation, source inspection, brand comparison and optional **Evaluate with LLM judge**.
+- **[Watch the 30-second demo, including LLM judge](https://jiabeiliu.github.io/brandlens/#recorded-demo)**: publicly viewable recording of the running local application; inference waiting time is shortened.
+- **[Interactive example walkthrough](https://jiabeiliu.github.io/brandlens/)**: authored examples, not a hosted LLM endpoint.
+
+The localhost link works only on the computer running the backend. For a fresh checkout, follow **Run it** below, start PostgreSQL and Ollama, and ingest the brand corpus. Enter a question before clicking **Generate insight**; enable **Evaluate with LLM judge** to request groundedness and relevance scores with rationales. Local inference can take over a minute; evaluation adds a second model call. Same-model judge scores are experimental and are not human-calibrated.
 
 A portfolio prototype: a tiny "Insights Finder" for brands. Given a brand and an
 advertiser-style question, it retrieves that brand's knowledge from pgvector,
@@ -143,7 +149,7 @@ Pipeline details: see PIPELINE.md.
 
 This prototype uses curated brand JSON profiles, not an automatically learned knowledge graph.
 The default corpus includes dated source provenance; each generated claim still needs a support check, and company positioning cannot establish measured audience behavior.
-The public demo is authored examples. The local service performs actual retrieval and generation.
+The public page provides a recorded local run and authored interactive examples. The localhost service performs actual retrieval and generation.
 No measured audience composition, ROAS impact or equivalence with Google products is claimed.
 
 ## Reliability and evaluation improvements
