@@ -363,7 +363,7 @@
   async function ask() {
     if (state.busy) return;
     var q = $("question").value.trim();
-    if (!q) { $("question").focus(); return; }
+    if (!q) { showError("Enter a question before generating an insight."); $("question").focus(); return; }
     clearError();
 
     if (state.mode === "compare") {
