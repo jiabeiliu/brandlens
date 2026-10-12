@@ -1,1 +1,18 @@
-{"audienceSegments":["Tech-forward early adopters","Environmentally conscious buyers","Suburban families (Model Y core buyers)","Fleet and commercial operators (Semi, robotaxi)","Homeowners interested in solar + storage","Ride-hail riders in robotaxi cities"],"brand":"tesla","competitors":["BYD","Ford","Rivian","General Motors","Hyundai/Kia","Waymo (robotaxi)","Zoox (robotaxi)"],"displayName":"Tesla","founded":2003,"headquarters":"Gigafactory Texas, Austin, Texas, USA","industry":"Electric vehicles & clean energy","keyFacts":["Headquartered in Austin, Texas; 100,000+ employees; ~$94.8B revenue in 2025","Founded July 2003 by Martin Eberhard and Marc Tarpenning as Tesla Motors; Elon Musk became CEO in 2008","Produced 1.66M vehicles in 2025; 1,359 sales/service centers and 7,791 Supercharger stations","Robotaxi service live in Austin, Dallas, Houston, Miami, Orlando, Tampa (2026); Nevada approved up to 5,000 vehicles","Cybercab volume production at Gigafactory Texas; unsupervised FSD targeted for consumer vehicles"],"marketingChannels":["Elon Musk's direct social media reach","Referral program and owner community","Over-the-air software updates as ongoing product marketing","Robotaxi city launches and demo events","No traditional paid advertising (historically)"],"products":["Model 3 sedan","Model Y crossover","Model S sedan","Model X SUV","Cybertruck pickup","Tesla Semi","Cybercab (purpose-built robotaxi)","Powerwall (home battery)","Megapack (grid-scale battery)","Solar panels and Solar Roof","Supercharger network","Full Self-Driving (FSD) software"],"tagline":"Accelerating the world's transition to sustainable energy"}
+{
+  "brand": "tesla",
+  "displayName": "Tesla",
+  "industry": "Electric vehicles & energy",
+  "products": [
+    "Electric vehicles",
+    "Solar",
+    "Battery storage"
+  ],
+  "keyFacts": [
+    "The official company page describes electric vehicles, solar generation and battery storage. It discusses residential and commercial energy uses and a sustainability-oriented product vision. These descriptions do not establish current geographic eligibility, buyer segments or advertising results."
+  ],
+  "audienceSegments": [],
+  "competitors": [],
+  "sourceUrl": "https://www.tesla.com/about",
+  "checkedAt": "2026-10-11",
+  "profileType": "curated company context; not audience research"
+}

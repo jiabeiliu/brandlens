@@ -1,1 +1,18 @@
-{"audienceSegments":["Daily commuters grabbing coffee on the way to work","Remote workers and students using stores as a 'third place'","Mobile-order power users","Premium / Reserve experience seekers","Drive-thru convenience customers","Gen Z social and seasonal-drink fans"],"brand":"starbucks","competitors":["Dunkin'","Dutch Bros","Peet's Coffee","Costa Coffee","Tim Hortons","Luckin Coffee"],"displayName":"Starbucks","founded":1971,"headquarters":"Seattle, Washington, USA","industry":"Coffeehouses & beverages","keyFacts":["Largest coffeehouse company in the world; 34,000+ stores across 84 markets","Founded 1971 as a roaster/retailer in Seattle's Pike Place Market; named after the first mate in Moby Dick","Public since 1992 (NASDAQ: SBUX); brand portfolio includes Seattle's Best Coffee, Teavana, Evolution Fresh, Ethos Water","'Back to Starbucks' turnaround under CEO Brian Niccol (joined 2024): smaller-format store prototypes, 1,000 store 'uplifts' by end of 2026, $1B+ invested in customer experience","Plans ~5,000 new US cafes over the next few years with a smaller, 20%-cheaper-to-build format"],"marketingChannels":["Seasonal campaigns (e.g. Pumpkin Spice season)","Starbucks Rewards loyalty program and mobile app","In-store 'third place' experience and community events","Brand and merch collaborations","Reserve Roastery flagship locations"],"products":["Fresh-brewed coffee and espresso beverages","Starbucks Cold Brew","Frappuccino blended beverages","Starbucks Refreshers","Teas and smoothies","Fresh food: pastries, sandwiches, protein boxes","Whole-bean and ground coffee (30+ blends)","Starbucks VIA Instant, K-Cup pods","Ready-to-drink bottled beverages","Merchandise: mugs, tumblers, brewing equipment"],"tagline":"To inspire and nurture the human spirit — one person, one cup and one neighborhood at a time"}
+{
+  "brand": "starbucks",
+  "displayName": "Starbucks",
+  "industry": "Coffee & retail",
+  "products": [
+    "Coffee",
+    "Drinks and food",
+    "Coffeehouse experience"
+  ],
+  "keyFacts": [
+    "The official site organizes its brand content around coffee, the coffeehouse experience, drinks and food, merchandise, and people and community impact. These are company communication themes, not evidence of customer demographics or campaign effectiveness."
+  ],
+  "audienceSegments": [],
+  "competitors": [],
+  "sourceUrl": "https://about.starbucks.com/",
+  "checkedAt": "2026-10-11",
+  "profileType": "curated company context; not audience research"
+}

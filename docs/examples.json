@@ -3,7 +3,7 @@
     "name": "Nike",
     "industry": "Athletic footwear & apparel",
     "source": "https://about.nike.com/en/company",
-    "fact": "Nike describes its mission around inspiration and innovation for athletes.",
+    "fact": "Nike\u2019s company page positions the business around athletes and sport.",
     "hypothesis": "Running-focused messaging may resonate with people who identify with athletic progress. This is a hypothesis, not an observed audience segment.",
     "test": "Compare a personal-progress message with a product-feature message in a randomized creative experiment.",
     "metric": "Predefine conversion rate as the primary metric, with cost per conversion as a guardrail. Use a power calculation before launch.",

@@ -53,6 +53,8 @@ public class InsightService {
     private final BrandCatalogService catalogService;
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
+    @Value("${llm.max-tokens:512}")
+    private int maxTokens = 512;
     private final String chatModel;
 
     /** Retrieved chunks plus the rendered prompt text for them. */
@@ -146,8 +148,8 @@ public class InsightService {
                 + "\nAdvertiser question: " + question;
 
         String answer = chat(buildMessages(system, List.of(), user), 0.2);
-        validateCitations(answer, ctxA.sources(), "A");
-        validateCitations(answer, ctxB.sources(), "B");
+        answer = validateCitations(answer, ctxA.sources(), "A");
+        answer = validateCitations(answer, ctxB.sources(), "B");
         return new CompareResponse(brandA, brandB, answer, markCitations(answer, ctxA.sources(), "A"), markCitations(answer, ctxB.sources(), "B"));
     }
 
@@ -167,7 +169,7 @@ public class InsightService {
                 + "\nAdvertiser question: " + question;
         String answer = chat(buildMessages(system, history, user), 0.2);
 
-        validateCitations(answer, ctx.sources(), null);
+        answer = validateCitations(answer, ctx.sources(), null);
         Scores scores = judge(question, "Curated entity profile (not measured audience data):\n" + catalogService.renderForPrompt(profile) + "\n" + ctx.text(), answer);
         return new EvalResponse(brand, answer, markCitations(answer, ctx.sources(), null),
                 scores.groundedness(), scores.groundednessRationale(),
@@ -196,6 +198,8 @@ public class InsightService {
         java.util.Set<String> allowed = sources.stream().map(x -> Long.toString(x.chunkId())).collect(java.util.stream.Collectors.toSet());
         while (m.find()) if (!allowed.contains(m.group(1)))
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_GATEWAY, "Model cited unavailable evidence");
+        if (!Pattern.compile("\\[" + prefix + "chunk:\\d+\\]").matcher(answer).find())
+            return "Insufficient cited evidence. No supported advertiser insight is available for this question.";
         return answer;
     }
     static List<SourceDto> markCitations(String answer, List<SourceDto> sources, String label) {
@@ -242,8 +246,8 @@ public class InsightService {
         List<SourceDto> sources = new ArrayList<>();
         for (ScoredChunk c : chunks) {
             String tag = (label == null || label.isBlank())
-                    ? "[chunk " + c.chunkId() + " | doc " + c.docId() + "]"
-                    : "[" + label + ":chunk:" + c.chunkId() + " | doc " + c.docId() + "]";
+                    ? "[chunk:" + c.chunkId() + "] doc: " + c.docId()
+                    : "[" + label + ":chunk:" + c.chunkId() + "] doc: " + c.docId();
             context.append(tag).append("\n").append(c.content()).append("\n\n");
             sources.add(new SourceDto(c.chunkId(), c.docId(), c.score(), c.content(), false));
         }
@@ -272,6 +276,7 @@ public class InsightService {
     private String chat(List<Map<String, String>> messages, double temperature) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("model", chatModel);
+        body.put("max_tokens", maxTokens);
         body.put("temperature", temperature);
         body.put("messages", messages);
 

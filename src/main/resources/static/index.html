@@ -234,7 +234,7 @@
   function escapeHtml(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
   }
 
   // Minimal safe formatting: escape first, then **bold** and line breaks.
@@ -296,7 +296,9 @@
     return "<div class='sources'><h4>Evidence — expand to inspect</h4>" + sources.map(function(s) {
       return "<details><summary>" + escapeHtml(s.docId) + " · chunk " + s.chunkId +
         (s.cited ? " · referenced in answer" : " · retrieved, not cited") + "</summary><p>" +
-        escapeHtml(s.excerpt || "Excerpt unavailable") + "</p></details>";
+        escapeHtml(s.excerpt || "Excerpt unavailable") + "</p>" +
+        (s.sourceUrl && /^https:\/\//.test(s.sourceUrl) ? "<a target='_blank' rel='noopener noreferrer' href='" + escapeHtml(s.sourceUrl) + "'>Open original source</a>" : "") +
+        (s.checkedAt ? "<p>Checked: " + escapeHtml(s.checkedAt) + "</p>" : "") + "</details>";
     }).join("") + "<p class='hint'>A valid reference does not prove that the source supports every claim.</p></div>";
   }
 

@@ -91,7 +91,7 @@ Then:
 ```bash
 cd ~/workspace/brandlens
 mvn spring-boot:run              # terminal 1 — starts on :8081, schema.sql auto-creates the table
-python3 scripts/seed.py          # terminal 2 — ingests all 12 brand docs (~2-3 min on Ollama)
+python3 scripts/seed.py          # terminal 2 — ingests the three source-backed brand docs (~2-3 min on Ollama)
 ```
 
 Open **http://localhost:8081/** for the demo UI — single-brand insights, brand comparison,
@@ -137,15 +137,12 @@ Pipeline details: see PIPELINE.md.
 
 ## Data
 
-`data/{nike,starbucks,tesla}/` — 12 docs, summarized Oct 2026 from public
-sources (official about pages, company profiles, press coverage). Each file
-notes its source. `src/main/resources/entities/*.json` — hand-curated entity
-profiles per brand.
+`data/{nike,starbucks,tesla}/` contains one paraphrased official company-page summary per brand, checked 2026-10-11, with source URL and evidence limits. Publication dates are not inferred from access dates. Curated profiles use that same limited evidence; audience segments are not asserted as measured facts. Original unchecked summaries are preserved in `archive/unverified-corpus/` and excluded from seeding. A larger sourced corpus is future work.
 
 ## Prototype scope
 
 This prototype uses curated brand JSON profiles, not an automatically learned knowledge graph.
-Source summaries and profiles require fact-checking and dated source provenance before substantive advertiser use.
+The default corpus includes dated source provenance; each generated claim still needs a support check, and company positioning cannot establish measured audience behavior.
 The public demo is authored examples. The local service performs actual retrieval and generation.
 No measured audience composition, ROAS impact or equivalence with Google products is claimed.
 
@@ -169,6 +166,6 @@ See [evaluation protocol](eval/REVIEW.md).
 - [x] LLM-as-judge eval (`POST /api/insights/eval`)
 - [x] Multi-turn follow-ups (optional `history` on `/api/insights`)
 - [x] Pipeline hardening (incremental seed, validation, PIPELINE.md, entity drafter)
-- [ ] Run + seed on Mac, verify one insight per brand end-to-end
+- [x] Local PostgreSQL/Ollama ingestion and repeated-document replacement verified; answer review is recorded separately
 - [ ] Optional: add a 4th brand (see PIPELINE.md — ~10 min), tune topK, try a bigger local model
 - [x] Public source repository and authored interactive walkthrough
