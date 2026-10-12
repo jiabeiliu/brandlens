@@ -9,8 +9,9 @@ sources — using a local LLM, free.
 Built for a Monday chat with Google's Ads Planning team (Insights Finder /
 PARC): same retrieve → generate → cite architecture, applied to brands
 instead of medical knowledge.
-<img width="1270" height="697" alt="image" src="https://github.com/user-attachments/assets/69b9f67a-b724-4b84-b0e9-9090920911f0" />
-<img width="1270" height="697" alt="image" src="https://github.com/user-attachments/assets/66f9cddf-82e4-4d4f-85e4-ce2a838838bf" />
+<img width="1270" height="697" alt="3e97a2e21bed29bdef59112079d6ddf4" src="https://github.com/user-attachments/assets/d8064ea1-c63c-4e97-9889-c10c50446573" />
+<img width="1267" height="868" alt="ad30d8e34f28364910ab749a2c060a24" src="https://github.com/user-attachments/assets/f21a7352-b96a-4bb3-9f14-9fe28201a9bd" />
+
 
 ## Architecture
 
